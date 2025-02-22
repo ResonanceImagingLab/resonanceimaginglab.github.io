@@ -3,37 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab Website</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Resonance Imaging Lab</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Resonance Imaging Lab</h1>
-        <h2>Welcome to Our Lab!</h2>
-        <nav>
-            <ul>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#research">Research</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="about">
-            <h2>About Us</h2>
-            <p>Our lab focuses on cutting-edge research in various scientific fields.</p>
-        </section>
-        <section id="research">
-            <h2>Research</h2>
-            <p>We are currently working on several exciting projects that aim to advance our understanding of the world.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Email: info@ourlab.com</p>
-        </section>
-    </main>
-    <footer>
-        <p>© 2024 Our Lab. All rights reserved.</p>
-    </footer>
+    <div class="container mt-4">
+        <h1 class="text-center">Resonance Imaging Lab</h1>
+        <ul class="nav nav-tabs" id="Tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" onclick="loadMarkdown('theLab.md', this)">The Lab</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#" onclick="loadMarkdown('tutorial1.md', this)">Tutorial 1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="loadMarkdown('tutorial2.md', this)">Tutorial 2</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="loadMarkdown('tutorial3.md', this)">Tutorial 3</a>
+            </li>
+        </ul>
+        <div id="content" class="mt-4 p-3 border"></div>
+    </div>
+    
+    <script>
+        function loadMarkdown(file, element) {
+            fetch(file)
+                .then(response => response.text())
+                .then(markdown => {
+                    let converter = new showdown.Converter();
+                    document.getElementById('content').innerHTML = converter.makeHtml(markdown);
+                })
+                .catch(error => {
+                    document.getElementById('content').innerHTML = "<p class='text-danger'>Error loading content.</p>";
+                });
+            
+            document.querySelectorAll('.nav-link').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+        }
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            loadMarkdown('tutorial1.md', document.querySelector('.nav-link'));
+        });
+    </script>
 </body>
 </html>
